@@ -9,3 +9,5 @@ YT guide: https://www.youtube.com/playlist?list=PLLtnMUo8g-Q4e3LvQn_J3Nkxs5-6Frd
 Wordpress plugin used - WPgraphQL
 
 .env file created with local dev endpoint
+
+example repo from next.js: https://github.com/Bedkow/next.js-wordpress-example/tree/canary/examples/cms-wordpress
