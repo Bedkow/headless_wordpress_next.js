@@ -11,3 +11,5 @@ Wordpress plugin used - WPgraphQL
 .env file created with local dev endpoint
 
 example repo from next.js: https://github.com/Bedkow/next.js-wordpress-example/tree/canary/examples/cms-wordpress
+
+SWR library to ease data fetching - https://swr.vercel.app/
