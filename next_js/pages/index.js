@@ -22,8 +22,8 @@ export default function Home() {
 			<main>
 				<h1>
 					{data.page.title}
-          <div dangerouslySetInnerHTML={{__html: data.page.content}} />
 				</h1>
+        <div dangerouslySetInnerHTML={{__html: data.page.content}} />
 			</main>
 		</div>
 	);

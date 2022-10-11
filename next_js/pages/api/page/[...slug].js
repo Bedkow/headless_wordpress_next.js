@@ -1,6 +1,8 @@
 export default async (req, res) => {
 	const {query: { slug }} = req;
 
+    const uri = slug.join('/');
+
 	const QUERY_SINGLE_POST = `
     query SinglePost($id: ID!) {
         page(id: $id, idType: URI) {
@@ -17,7 +19,7 @@ console.log(slug)
 		body: JSON.stringify({
             query: QUERY_SINGLE_POST,
             variables: {
-                id: slug
+                id: uri
             }
          })
 	});
