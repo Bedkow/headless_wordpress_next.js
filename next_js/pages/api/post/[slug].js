@@ -1,28 +1,31 @@
 export default async (req, res) => {
 	const {query: { slug }} = req;
 
-    const uri = slug.join('/');
+    // const uri = slug.join('/');
 
-	const QUERY_SINGLE_PAGE = `
-    query SinglePage($id: ID!) {
-        page(id: $id, idType: URI) {
+	const QUERY_SINGLE_POST = `
+    query SinglePost($id: ID!) {
+        post(id: $id, idType: SLUG) {
             title
             content
         }
 }
 `;
+
+
 	const data = await fetch(process.env.WORDPRESS_LOCAL_API_URL, {
         method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
-            query: QUERY_SINGLE_PAGE,
+            query: QUERY_SINGLE_POST,
             variables: {
-                id: uri
+                id: slug
             }
          })
 	});
 
 	const json = await data.json();
+
 
 	res.json(json.data);
 

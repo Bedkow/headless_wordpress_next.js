@@ -1,10 +1,11 @@
 import Head from "next/head";
 import useSWR from "swr";
+import { useRouter } from "next/router";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-export default function Page( {slug} ) {
-	const { data, error } = useSWR(`/api/page/${slug}`, fetcher);
+export default function Post( {slug} ) {
+	const { data, error } = useSWR(`/api/post/${slug}`, fetcher);
 
 	if (error) return <div>error...</div>;
 	if (!data) return <div>loading...</div>;
@@ -18,56 +19,46 @@ export default function Page( {slug} ) {
 			</Head>
 
 			<main>
-				{/* <h1>{data.page.title}</h1> */}
-				{/* <div dangerouslySetInnerHTML={{ __html: data.page.content }} /> */}
+				<h1>{data.post.title}</h1>
+				<div dangerouslySetInnerHTML={{ __html: data.post.content }} />
 			</main>
 		</div>
 	);
 }
 
 export async function getStaticProps( { params } ) {
-	const slug = params.slug.join('/');
 	return {
 		props: {
-			slug
+			slug: params.slug
 		}
 	}
 }
 
 export async function getStaticPaths() {
-	const QUERY_ALL_PAGES = `
-	query AllPages {
-		pages {
+	const QUERY_ALL_POSTS = `
+	query AllPosts {
+		posts {
 			edges {
 				node {
-					uri
+					slug
 				}
 			}
 		}
 	}
 	`;
 
-	const allPages = await fetch( process.env.WORDPRESS_LOCAL_API_URL, {
+	const allPosts = await fetch( process.env.WORDPRESS_LOCAL_API_URL, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json'},
 		body: JSON.stringify({
-			query: QUERY_ALL_PAGES
+			query: QUERY_ALL_POSTS
 		})
 	});
 
-	const {data: { pages: { edges } }} = await allPages.json();
-
-	const paths = edges.map(({node}) => {
-		const {uri} = node;
-		return{
-			params: {
-				slug: uri.split('/').filter((i) => i)
-			}
-		}
-	})
+    const {data: {posts: {edges}}} = await allPosts.json();
 
 	return {
-		paths,
+		paths: edges.map(({node}) => `/post/${node.slug}`) || [],
 		fallback: true,
 	}
 }
