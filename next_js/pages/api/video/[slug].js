@@ -1,11 +1,16 @@
 export default async (req, res) => {
 	const {query: { slug }} = req;
 
-	const QUERY_SINGLE_POST = `
-    query SinglePost($id: ID!) {
-        post(id: $id, idType: SLUG) {
+	const QUERY_SINGLE_VIDEO = `
+    query SingleVideo($id: ID!) {
+        video(id: $id, idType: SLUG) {
             title
             content
+            featuredImage {
+                node {
+                    srcSet
+                }
+            }
         }
 }
 `;
@@ -14,7 +19,7 @@ export default async (req, res) => {
         method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
-            query: QUERY_SINGLE_POST,
+            query: QUERY_SINGLE_VIDEO,
             variables: {
                 id: slug
             }

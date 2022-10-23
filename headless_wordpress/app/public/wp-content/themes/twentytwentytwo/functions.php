@@ -70,37 +70,37 @@ require get_template_directory() . '/inc/block-patterns.php';
 function add_videos_cpt() {
 
 	$labels = array(
-		'name'                  => _x( 'Videos', 'Post Type General Name', 'text_domain' ),
-		'singular_name'         => _x( 'Videos', 'Post Type Singular Name', 'text_domain' ),
-		'menu_name'             => __( 'Videos', 'text_domain' ),
-		'name_admin_bar'        => __( 'poster', 'text_domain' ),
-		'archives'              => __( 'Video Archives', 'text_domain' ),
-		'attributes'            => __( 'Video Attributes', 'text_domain' ),
-		'parent_item_colon'     => __( 'Parent Video:', 'text_domain' ),
-		'all_items'             => __( 'All Video', 'text_domain' ),
-		'add_new_item'          => __( 'Add New Video', 'text_domain' ),
-		'add_new'               => __( 'Add New', 'text_domain' ),
-		'new_item'              => __( 'New Video', 'text_domain' ),
-		'edit_item'             => __( 'Edit Video', 'text_domain' ),
-		'update_item'           => __( 'Update Video', 'text_domain' ),
-		'view_item'             => __( 'View Video', 'text_domain' ),
-		'view_items'            => __( 'View Videos', 'text_domain' ),
-		'search_items'          => __( 'Search Videos', 'text_domain' ),
-		'not_found'             => __( 'Not found', 'text_domain' ),
-		'not_found_in_trash'    => __( 'Not found in Trash', 'text_domain' ),
-		'featured_image'        => __( 'Poster image', 'text_domain' ),
-		'set_featured_image'    => __( 'Set poster image', 'text_domain' ),
-		'remove_featured_image' => __( 'Remove poster image', 'text_domain' ),
-		'use_featured_image'    => __( 'Use as poster image', 'text_domain' ),
-		'insert_into_item'      => __( 'Insert into item', 'text_domain' ),
-		'uploaded_to_this_item' => __( 'Uploaded to this Video', 'text_domain' ),
-		'items_list'            => __( 'Videos list', 'text_domain' ),
-		'items_list_navigation' => __( 'Videos list navigation', 'text_domain' ),
-		'filter_items_list'     => __( 'Filter Videos list', 'text_domain' ),
+		'name'                  => 'videos',
+		'singular_name'         =>  'Video',
+		'menu_name'             =>  'Videos',
+		'name_admin_bar'        =>  'poster',
+		'archives'              =>  'Video Archives',
+		'attributes'            =>  'Video Attributes',
+		'parent_item_colon'     =>  'Parent Video:',
+		'all_items'             =>  'All Video',
+		'add_new_item'          =>  'Add New Video',
+		'add_new'               =>  'Add New',
+		'new_item'              =>  'New Video',
+		'edit_item'             =>  'Edit Video',
+		'update_item'           =>  'Update Video',
+		'view_item'             =>  'View Video',
+		'view_items'            =>  'View Videos',
+		'search_items'          =>  'Search Videos',
+		'not_found'             =>  'Not found',
+		'not_found_in_trash'    =>  'Not found in Trash',
+		'featured_image'        =>  'Poster image',
+		'set_featured_image'    =>  'Set poster image',
+		'remove_featured_image' =>  'Remove poster image',
+		'use_featured_image'    =>  'Use as poster image',
+		'insert_into_item'      =>  'Insert into item',
+		'uploaded_to_this_item' =>  'Uploaded to this Video',
+		'items_list'            =>  'Videos list',
+		'items_list_navigation' =>  'Videos list navigation',
+		'filter_items_list'     =>  'Filter Videos list',
 	);
 	$args = array(
-		'label'                 => __( 'Videos', 'text_domain' ),
-		'description'           => __( 'The site videos', 'text_domain' ),
+		'label'                 => 'Video',
+		'description'           => 'The site videos',
 		'labels'                => $labels,
 		'supports'              => array( 'title', 'editor', 'thumbnail' ),
 		'hierarchical'          => false,
@@ -117,8 +117,18 @@ function add_videos_cpt() {
 		'publicly_queryable'    => true,
 		'capability_type'       => 'page',
 		'show_in_rest'          => true,
+		'show_in_graphql'       => true,
+		'graphql_single_name'	=> 'video',
+		'graphql_plural_name'	=> 'videos',
 	);
-	register_post_type( 'post_type', $args );
+	register_post_type( 'videos', $args );
 
 }
 add_action( 'init', 'add_videos_cpt', 0 );
+
+// remove default Read more button from excerpt
+function excerpt_read_more_link($more) {
+	global $post;
+	return '';
+}
+add_filter('excerpt_more', 'excerpt_read_more_link');
