@@ -132,3 +132,45 @@ function excerpt_read_more_link($more) {
 	return '';
 }
 add_filter('excerpt_more', 'excerpt_read_more_link');
+
+//write the meta field into custom post type
+function add_video_metabox() {
+	add_meta_box(
+		'yt_url',
+		__('Youtube URL', 'twentytwentytwo'),
+		'video_metabox_markup', // outputs html for the meta box
+		'videos',
+		'side',
+		'high',
+		null
+	);
+}
+
+add_action('add_meta_boxes_videos', 'add_video_metabox', 10, 2);
+
+// markup for callback function
+function video_metabox_markup ($post) {
+?>
+
+	<div class="components-base-control">
+		<?php wp_nonce_field( 'yt_url_meta', 'yt_url_meta_nonce' ); ?>
+		<label class="components-base-control__label" for="yt_url"> 
+		<?php echo esc_html( 'Youtube URL' ); ?>
+		</label>
+		<input class="components-base-control__input" type="text" value="<?php echo esc_attr( get_post_meta( $post->ID, 'yt_url', true ) ); ?>" />
+	</div>
+
+<?php
+}
+
+//save the meta in the database
+function video_metabox_save( $post_id ) {
+	if ( isset( $POST['yt_url_meta_nonce'] ) && ! wp_verify_nonce( $POST['yt_url_meta_nonce'], 'yt_url_meta' ) )
+	return $post_id;
+
+	if (array_key_exists( 'yt_url', $_POST ) ) {
+		update_post_meta( $post_id, 'yt_url', sanitize_text_field($_POST['yt_url']) );
+	}
+}
+
+add_action('save_post', 'video_metabox_save');

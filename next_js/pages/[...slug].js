@@ -18,8 +18,8 @@ export default function Page( {slug} ) {
 			</Head>
 
 			<main>
-				{/* <h1>{data.page.title}</h1> */}
-				{/* <div dangerouslySetInnerHTML={{ __html: data.page.content }} /> */}
+				<h1>{data.page.title}</h1>
+				<div dangerouslySetInnerHTML={{ __html: data.page.content }} />
 			</main>
 		</div>
 	);
