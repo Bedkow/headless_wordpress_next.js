@@ -157,7 +157,7 @@ function video_metabox_markup ($post) {
 		<label class="components-base-control__label" for="yt_url"> 
 		<?php echo esc_html( 'Youtube URL' ); ?>
 		</label>
-		<input class="components-base-control__input" type="text" value="<?php echo esc_attr( get_post_meta( $post->ID, 'yt_url', true ) ); ?>" />
+		<input class="components-base-control__input" type="text" name="yt_url" value="<?php echo esc_attr( get_post_meta( $post->ID, 'yt_url', true ) ); ?>">
 	</div>
 
 <?php
@@ -165,8 +165,9 @@ function video_metabox_markup ($post) {
 
 //save the meta in the database
 function video_metabox_save( $post_id ) {
-	if ( isset( $POST['yt_url_meta_nonce'] ) && ! wp_verify_nonce( $POST['yt_url_meta_nonce'], 'yt_url_meta' ) )
+	if ( isset( $_POST['yt_url_meta_nonce'] ) && ! wp_verify_nonce( $_POST['yt_url_meta_nonce'],  'yt_url_meta' ) ) {
 	return $post_id;
+}
 
 	if (array_key_exists( 'yt_url', $_POST ) ) {
 		update_post_meta( $post_id, 'yt_url', sanitize_text_field($_POST['yt_url']) );
