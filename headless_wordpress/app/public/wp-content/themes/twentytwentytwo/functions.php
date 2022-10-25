@@ -175,3 +175,22 @@ function video_metabox_save( $post_id ) {
 }
 
 add_action('save_post', 'video_metabox_save');
+
+
+//add custom meta to WPGraphQL
+function graphql_video_meta() {
+	register_graphql_field(
+		'Video',
+		'youtubeURL',
+		[
+			'type' => 'String',
+			'description' => __('The URL of the YouTube video'),
+			'resolve' => function($post) {
+				$youtube_url = get_post_meta($post-> ID, 'yt_url', true);
+				return ! empty($youtube_url) ? $youtube_url : '';
+			}
+		]
+	);
+}
+
+add_action('graphql_register_types', 'graphql_video_meta');
