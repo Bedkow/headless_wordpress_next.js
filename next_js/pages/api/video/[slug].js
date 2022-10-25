@@ -6,6 +6,7 @@ export default async (req, res) => {
         video(id: $id, idType: SLUG) {
             title
             content
+            youtubeURL
             featuredImage {
                 node {
                     srcSet

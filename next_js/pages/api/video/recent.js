@@ -7,6 +7,7 @@ export default async (req, res) => {
               node {
                 title
                 slug
+                youtubeURL
               }
             }
           }
